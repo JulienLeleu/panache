@@ -2,8 +2,14 @@ Vincent FACK et Julien LELEU
 
 Test du programme : 3.2.1
 
-1/ Il ne veut pas quitter car l'adresse est déjà utilisée.
+Q1/ Il ne veut pas quitter car l'adresse est déjà utilisée.
 ==> "bind socket_serveur : Address already in use.
 L'adresse se libère au bout d'un certains temps.
 
-2/
+Q2/ -z : Specifies that nc should just scan for listening daemons, without sending any data to them. It is an error to use this option in conjunction with the -l option.
+Le délais fait que le message n'est pas envoyé car le client se co/deco directement.
+
+Q3/ Il essaye de se connecter en IPv6 mais il n'y arrive pas.
+
+Q4/ 
+
