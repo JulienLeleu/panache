@@ -1,0 +1,9 @@
+Vincent FACK et Julien LELEU
+
+Test du programme : 3.2.1
+
+Q1/ Il ne veut pas quitter car l'adresse est déjà utilisée.
+==> "bind socket_serveur : Address already in use.
+L'adresse se libère au bout d'un certains temps.
+
+Q2/
