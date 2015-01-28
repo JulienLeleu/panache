@@ -13,7 +13,7 @@ int creer_serveur(int port) {
 	saddr.sin_family = AF_INET;/* Socket ipv4 */
 	saddr.sin_port = htons(port); /* Port d'ecoute*/
 	saddr.sin_addr.s_addr = INADDR_ANY; /* ecoute sur toutes les interfaces*/
-	
+	initialiser_signaux();
 	if(setsockopt(socket_serveur, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(int)) == -1) {
 		perror("Can not set SO_REUSEADDR option");
 		return -1;
@@ -31,4 +31,10 @@ int creer_serveur(int port) {
 		/*traitement d'erreur*/
 	}
 	return socket_serveur;
+}
+
+void initialiser_signaux(void){
+	if(signal(SIGPIPE, SIG_IGN) == SIG_ERR)	{
+		perror("signal");
+	}
 }

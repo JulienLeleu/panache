@@ -4,6 +4,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <signal.h>
 
 #ifndef __SOCKET_H__
 #define __SOCKET_H__
@@ -15,4 +16,5 @@
 	socket créée. */
 
 int creer_serveur(int port);
+void initialiser_signaux(void);
 #endif
