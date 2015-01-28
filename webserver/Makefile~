@@ -28,7 +28,7 @@ OBJS =$(CFILES:.c=.o)
 all :$(EXE)
 
 # Cette règle permet de construire l’exécutable. Elle dépend des fichiers
-# .o et effectue l’édition de lien. Rien de nouveau ici
+# .o et effectue l’édition de lien. Rien de nouvemaau ici
 $(EXE): $(OBJS)
 	$(LD) $^ $(LDFLAGS) -o $@
 	

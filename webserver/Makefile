@@ -6,7 +6,7 @@ CFLAGS = -Wall -W -Werror
 LDFLAGS =
 
 # Le nom de l’exécutable à fabriquer
-EXE = mustached_server
+EXE = panache
 
 # Les variables HEADERS, CFILES et OBJS vont contenir respectivement
 # la listes des fichiers .h, .c et le nom des fichiers .o à fabriquer
