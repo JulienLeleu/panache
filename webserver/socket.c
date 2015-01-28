@@ -1,8 +1,4 @@
 #include "socket.h"
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <stdio.h>
-#include <arpa/inet.h>
 
 int creer_serveur(int port) {
 	int socket_serveur;

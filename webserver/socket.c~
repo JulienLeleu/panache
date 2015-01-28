@@ -28,5 +28,5 @@ int creer_serveur(int port) {
 		return -1;
 		/*traitement d'erreur*/
 	}
-	return 
+	return socket_serveur;
 }
