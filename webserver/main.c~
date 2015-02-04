@@ -41,7 +41,8 @@ int socket_serveur = creer_serveur(8080);
 				}
 		}
 		close(socket_client);
-		waitpid(-1,NULL,WNOHANG);
+		while(waitpid(-1,NULL,WNOHANG);
+
 		
 	}
 	return 0;
