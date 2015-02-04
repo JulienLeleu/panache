@@ -20,7 +20,6 @@ int socket_serveur = creer_serveur(8080);
 		int pid;
 		socket_client = accept(socket_serveur,NULL,NULL);
 		if((pid = fork()) == 0){
-			close(socket_client);
 			if(socket_client == -1) {
 				perror("accept");
 				return -1;
@@ -41,7 +40,8 @@ int socket_serveur = creer_serveur(8080);
 					write(socket_client, buf, nb_char);
 				}
 		}
-		
+		close(socket_client);
+		waitpid(-1,NULL,WNOHANG);
 		
 	}
 	return 0;

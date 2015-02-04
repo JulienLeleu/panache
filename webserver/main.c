@@ -36,11 +36,13 @@ int socket_serveur = creer_serveur(8080);
 					}
 					if( nb_char == 0){
 						break;
+						waitpid(-1,NULL,WNOHANG);
 					}
 					write(socket_client, buf, nb_char);
 				}
 		}
 		close(socket_client);
+
 		
 	}
 	return 0;
