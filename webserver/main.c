@@ -13,11 +13,13 @@ if (argc > 1 && strcmp(argv[1], " - advice " ) == 0) {
 char *buf = malloc(50);
 int nb_char;
 int socket_serveur = creer_serveur(8080);
+initialiser_signaux();
 
 
 	while(1){
 		int socket_client;
 		int pid;
+		traitement_signal(socket_client);
 		socket_client = accept(socket_serveur,NULL,NULL);
 		if((pid = fork()) == 0){
 			if(socket_client == -1) {
@@ -35,13 +37,12 @@ int socket_serveur = creer_serveur(8080);
 						return -1;
 					}
 					if( nb_char == 0){
-						break;
+						return 0;
 					}
 					write(socket_client, buf, nb_char);
 				}
 		}
 		close(socket_client);
-		while(waitpid(-1,NULL,WNOHANG));
 
 		
 	}
