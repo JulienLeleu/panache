@@ -1,5 +1,8 @@
 #include <string.h>
 #include "socket.h"
+
+int verif(char * buf);
+
 int main()
 {
 /* Arnold Robbins in the LJ of February ’95 , describing RCS
@@ -36,13 +39,38 @@ initialiser_signaux();
 					if( buf == NULL){
 						return 0;
 					}
-					fprintf(file,"%s\r\n",buf);
+					//fprintf(file,"%s\r\n",buf);
+					printf("%s\n",buf);
+					printf("%d\n",verif(buf));
 					fflush(file);
 				}
 		}
 		close(socket_client);
-
-		
 	}
 	return 0;
+}
+
+/*Verifie que le mot est bel est bien correct*/
+int verif(char * buf) {
+	int i = 0;
+	int j = 0;
+	int length = strlen(buf);
+	int nbMots = 1;
+	if(buf[0] == 'G' && buf[1] == 'E' && buf[2] == 'T'){
+		while(i<length){
+			if(buf[i]==' '){
+				nbMots++;
+				while(buf[i+j] == ' ' && i+j < length){
+					i++;
+				}
+				j=0;
+			}
+			else {
+				i++;
+			}
+		}
+	} else {
+		return 0;
+	}
+	return nbMots;
 }
