@@ -10,8 +10,7 @@ if (argc > 1 && strcmp(argv[1], " - advice " ) == 0) {
 	printf ("Need an advice ?\n");
 	return 0;
 }*/
-char *buf = malloc(50);
-int nb_char;
+char *buf = malloc(256);
 int socket_serveur = creer_serveur(8080);
 initialiser_signaux();
 
@@ -19,6 +18,7 @@ initialiser_signaux();
 	while(1){
 		int socket_client;
 		int pid;
+		FILE * file;
 		traitement_signal(socket_client);
 		socket_client = accept(socket_serveur,NULL,NULL);
 		if((pid = fork()) == 0){
@@ -26,20 +26,18 @@ initialiser_signaux();
 				perror("accept");
 				return -1;
 			}
-
+				file = fdopen(socket_client,"w+");
 				const char *message_bienvenue = "Bonjour, bienvenue sur mon serveur\n";
 				sleep(1);
-				write(socket_client, message_bienvenue, strlen(message_bienvenue));
+				fprintf(file,"%s\r\n",message_bienvenue);
+				fflush(file);
 				while(1) {
-					nb_char = read(socket_client, buf, 50);
-					if( nb_char == -1){
-						perror("read");
-						return -1;
-					}
-					if( nb_char == 0){
+					fgets(buf,256,file);
+					if( buf == NULL){
 						return 0;
 					}
-					write(socket_client, buf, nb_char);
+					fprintf(file,"%s\r\n",buf);
+					fflush(file);
 				}
 		}
 		close(socket_client);

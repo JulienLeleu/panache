@@ -35,7 +35,6 @@ int creer_serveur(int port) {
 
 void initialiser_signaux(void){
 
-	printf("lol");
 	struct sigaction sa;
 
 	sa.sa_handler = traitement_signal;
@@ -52,6 +51,7 @@ void initialiser_signaux(void){
 
 void traitement_signal(int sig) {
 	if (sig == SIGCHLD) {
+		printf("lol");
 		while (waitpid(-1, NULL, WNOHANG) > 0)
 			;
 	}
