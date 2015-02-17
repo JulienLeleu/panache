@@ -37,12 +37,13 @@ initialiser_signaux();
 				fprintf(file,"%s\r\n",message_bienvenue);
 				fflush(file);
 				while(1) {
-					if(fgets(buf,256,file) == EOF)
+					if(fgets(buf,256,file) == NULL)
 						return 0;
-					//fprintf(file,"%s\r\n",buf);
-					printf("%s\n",buf);
-					printf("%d\n",verif(buf));
-					fflush(file);
+					if(verif(buf) == 0){
+						fprintf(file,"HTTP/1.1 200 OK");
+					} else {
+						fprintf(file,"HTTP/1.1 400 Bad Request\nConnection: close\nContent-Length: 17\n\n400 Bad request");
+					}
 				}
 		}
 		close(socket_client);
@@ -58,7 +59,7 @@ int verif(char * buf) {
 	int j = 0;
 	int length = strlen(buf);
 	int nbMots = 1;
-	if(verifGET(buf) == 0) {
+	if(verifGET(buf) == 0 && strcmp("\r\n",buf)) {
 		while(i<length){
 			if(buf[i]==' '){
 				nbMots++;
