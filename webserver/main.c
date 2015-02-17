@@ -37,10 +37,8 @@ initialiser_signaux();
 				fprintf(file,"%s\r\n",message_bienvenue);
 				fflush(file);
 				while(1) {
-					fgets(buf,256,file);
-					if( buf == NULL){
+					if(fgets(buf,256,file) == NULL)
 						return 0;
-					}
 					//fprintf(file,"%s\r\n",buf);
 					printf("%s\n",buf);
 					printf("%d\n",verif(buf));

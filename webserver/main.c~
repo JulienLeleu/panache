@@ -37,10 +37,8 @@ initialiser_signaux();
 				fprintf(file,"%s\r\n",message_bienvenue);
 				fflush(file);
 				while(1) {
-					fgets(buf,256,file);
-					if( buf == NULL){
+					if(fgets(buf,256,file) == EOF)
 						return 0;
-					}
 					//fprintf(file,"%s\r\n",buf);
 					printf("%s\n",buf);
 					printf("%d\n",verif(buf));
@@ -68,7 +66,7 @@ int verif(char * buf) {
 				while(buf[i+j] == ' ' && i+j < length){
 					i++;
 				}
-				if(nbMots == 3 && verifHTTP(buf,i)){
+				if(nbMots == 3 && verifHTTP(buf,i) == 0){
 					return 0;
 				}
 				j=0;
