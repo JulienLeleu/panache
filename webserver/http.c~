@@ -19,6 +19,7 @@ int verifNbMots(char * buf) {
 	/*
 		Il faut traiter le buffer et choper que la 1ere ligne en utilisant les separateurs \r\n
 		On stocke toutes les lignes
+	
 	*/
 		if(buf[i]==' '){	
 			while(buf[i] == ' ' && i < length){
