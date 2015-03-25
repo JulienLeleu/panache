@@ -25,6 +25,7 @@ int main()
 				while(1) {
 					sleep(1);
 					buf = fgets(buf,1024,file);
+					skip_headers(file);
 					if(verif(buf) == 0){
 						fprintf(file,"HTTP/1.0 200 OK\r\nContent-Length: %d\r\nContent-Type: text/plain\r\n\r\n%s\r\n",(int) strlen(message_bienvenue),message_bienvenue);
 						fflush(file);
