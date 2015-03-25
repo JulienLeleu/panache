@@ -4,9 +4,10 @@
 
 int main()
 {
-//char *buf = malloc(1024);
-int socket_serveur = creer_serveur(8080);
-initialiser_signaux();
+	char *buf = malloc(1024);
+	int socket_serveur = creer_serveur(8080);
+	initialiser_signaux();
+	const char *message_bienvenue = "Bonjour, bienvenue sur mon serveur";
 
 
 	while(1){
@@ -21,19 +22,16 @@ initialiser_signaux();
 				return -1;
 			}
 				file = fdopen(socket_client,"w+");
-				const char *message_bienvenue = "Bonjour, bienvenue sur mon serveur";
-				sleep(1);
 				while(1) {
-					/*if(fgets(buf,1024,file) != NULL) {*/
-						/*if(verif(buf) == 0){*/
-							fprintf(file,"HTTP/1.0 200 OK\r\nConnection: close\r\nContent-Length: %d\r\n\r\n%s\r\n",(int) strlen(message_bienvenue),message_bienvenue);
-							fflush(file);
-						/*} else {
-							fprintf(file,"%d\n",verif(buf));
-							fprintf(file,"HTTP/1.1 400 Bad Request\r\nConnection: close\r\nContent-Length: 17\r\n\r\n400 Bad request\r\n");
-							fflush(file);
-						}
-					}*/
+					sleep(1);
+					buf = fgets(buf,1024,file);
+					if(verif(buf) == 0){
+						fprintf(file,"HTTP/1.0 200 OK\r\nContent-Length: %d\r\nContent-Type: text/plain\r\n\r\n%s\r\n",(int) strlen(message_bienvenue),message_bienvenue);
+						fflush(file);
+					} else {
+						fprintf(file,"HTTP/1.1 400 Bad Request\r\nConnection: close\r\nContent-Length: 17\r\n\r\n400 Bad request\r\n");
+						fflush(file);
+					}
 				}
 		}
 		close(socket_client);
