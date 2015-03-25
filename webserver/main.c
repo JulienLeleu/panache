@@ -2,18 +2,30 @@
 #include "socket.h"
 #include "http.h"
 
+char * fgets_or_exit(char * buf, int size, FILE * file)
+{
+	if (fgets(buf, size, file) == NULL)
+	{
+		fclose(file);
+		exit(0);
+	}
+	return buf;
+}
+
 int main()
 {
 	char *buf = malloc(1024);
 	int socket_serveur = creer_serveur(8080);
 	initialiser_signaux();
 	const char *message_bienvenue = "Bonjour, bienvenue sur mon serveur";
+	http_request request;
 
 
 	while(1){
 		int socket_client;
 		int pid;
-		FILE * file;
+		int bad_request;
+		FILE * client;
 		traitement_signal(socket_client);
 		socket_client = accept(socket_serveur,NULL,NULL);
 		if((pid = fork()) == 0){
@@ -21,22 +33,20 @@ int main()
 				perror("accept");
 				return -1;
 			}
-				file = fdopen(socket_client,"w+");
+				client = fdopen(socket_client,"w+");
 				while(1) {
 					sleep(1);
-					buf = fgets(buf,1024,file);
-					skip_headers(file);
-					int reponse = verif(buf);
-					if(reponse == 0){
-						fprintf(file,"HTTP/1.0 200 OK\r\nContent-Length: %d\r\nContent-Type: text/plain\r\n\r\n%s\r\n",(int) strlen(message_bienvenue),message_bienvenue);
-						fflush(file);
-					} else if(reponse == 404) {
-						fprintf(file,"HTTP/1.1 404 Page Not Found\r\nConnection: close\r\nContent-Length: 18\r\n\r\n404 Page Not Found\r\n");
-						fflush(file);
-					} else if(reponse == 400) {
-						fprintf(file,"HTTP/1.1 400 Bad Request\r\nConnection: close\r\nContent-Length: 17\r\n\r\n400 Bad request\r\n");
-						fflush(file);
-					}
+					buf = fgets_or_exit(buf,1024,client);
+					skip_headers(client);
+					bad_request = parse_http_request(buf, &request);
+					if(bad_request == 0)
+						send_response(client, 400, "Bad Request", "Bad request\r\n", request.minor_version);
+					else if(request.method == HTTP_UNSUPPORTED)
+						send_response ( client , 405 , "Method Not Allowed" , "Method Not Allowed\r\n", request.minor_version);
+					else if(strcmp(request.url, "/") == 0)
+						send_response(client, 200, "OK", message_bienvenue, request.minor_version);
+					else
+						send_response(client, 404, "Not Found", "Not Found\r\n", request.minor_version);
 				}
 		}
 		close(socket_client);
