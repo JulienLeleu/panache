@@ -3,30 +3,32 @@
 
 int verif(char * buf) {
 	char * s = " ";
-	char *tmp;
+	char * tmp;
 	char * token;
-	int i = 1;
+	int i = 0;
 	
 	tmp = alloca(strlen(buf)+1);
 	strcpy(tmp, buf);
 	
 	token = strtok(tmp,s);
 	
-	while(token != NULL && i <= 3) {
+	while(token != NULL && i < 3) {
 		switch(i) {
-			case 1 : if(strncmp(token,"GET",3) !=0)
-					return -1;
+			case 0 : if(strncmp(token,"GET",3) !=0)
+					return 400;
 				break;
-			case 2 : if(strncmp(token,"/",1) !=0)
-					return -1;
+			case 1 : if(strncmp(token,"/",strlen(token)) !=0)
+					return 404;
 				break;
-			case 3 : if(strncmp(token,"HTTP/1.1",8) !=0 )
-					return -1;
+			case 2 : if(strncmp(token,"HTTP/1.1",8) !=0 && strncmp(token,"HTTP/1.0",8) !=0)
+					return 400;
 				break;
 		}
-		printf( " %s\n", token );
     		token = strtok(NULL, s);
     		i++;
+	}
+	if(i != 3) {
+		return 400;
 	}
 	return 0;
 }

@@ -26,10 +26,14 @@ int main()
 					sleep(1);
 					buf = fgets(buf,1024,file);
 					skip_headers(file);
-					if(verif(buf) == 0){
+					int reponse = verif(buf);
+					if(reponse == 0){
 						fprintf(file,"HTTP/1.0 200 OK\r\nContent-Length: %d\r\nContent-Type: text/plain\r\n\r\n%s\r\n",(int) strlen(message_bienvenue),message_bienvenue);
 						fflush(file);
-					} else {
+					} else if(reponse == 404) {
+						fprintf(file,"HTTP/1.1 404 Page Not Found\r\nConnection: close\r\nContent-Length: 18\r\n\r\n404 Page Not Found\r\n");
+						fflush(file);
+					} else if(reponse == 400) {
 						fprintf(file,"HTTP/1.1 400 Bad Request\r\nConnection: close\r\nContent-Length: 17\r\n\r\n400 Bad request\r\n");
 						fflush(file);
 					}
