@@ -64,6 +64,6 @@ void send_status(FILE * client, int code, const char * reason_phrase, int http_v
 
 void send_response(FILE * client, int code, const char * reason_phrase, const char * message_body, int http_version) {
 	send_status(client, code, reason_phrase, http_version);
-	fprintf(client, "Content-Length: %d\r\n\r\n%s", (int)strlen(message_body), message_body);
+	fprintf(client, "Content-Length: %d\r\n\r\n%s\r\n", (int)strlen(message_body), message_body);
 	fflush(client);
 }

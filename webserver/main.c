@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 	}
 	
 	
-	const char * document_root = argv[1];
+	/*const char * document_root = argv[1];*/
 	
 	char *buf = malloc(1024);
 	int socket_serveur = creer_serveur(8080);
@@ -56,14 +56,14 @@ int main(int argc, char **argv)
 					buf = fgets_or_exit(buf,1024,client);
 					skip_headers(client);
 					bad_request = parse_http_request(buf, &request);
-					char * url;
+					/*char * url;*/
 					if(bad_request == 0)
 						send_response(client, 400, "Bad Request", "Bad request\r\n", request.minor_version);
 					else if(request.method == HTTP_UNSUPPORTED)
 						send_response ( client , 405 , "Method Not Allowed" , "Method Not Allowed\r\n", request.minor_version);
-					else if((url = rewrite_url(request.url))!=NULL){
-							int fd = check_and_open(url,document_root);
-							printf("%d",get_file_size(fd));
+					else if(strcmp(request.url,"/") == 0){
+							/*int fd = check_and_open(url,document_root);
+							printf("%d",get_file_size(fd));*/
 							send_response(client, 200, "OK", message_bienvenue, request.minor_version);
 						}
 					else

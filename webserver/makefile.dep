@@ -1,4 +1,4 @@
-socket.o: socket.c socket.h
 fichier.o: fichier.c fichier.h
-main.o: main.c socket.h http.h fichier.h
 http.o: http.c http.h
+main.o: main.c socket.h http.h fichier.h
+socket.o: socket.c socket.h
